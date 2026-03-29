@@ -1,12 +1,14 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group = 'org.example'
+version = '1.0-SNAPSHOT'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {
@@ -14,8 +16,19 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:6.0.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+    implementation 'org.apache.pdfbox:pdfbox:3.0.3'
+
+    testImplementation platform("org.junit:junit-bom:6.0.2")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+application {
+    mainClass = 'nl.vu.cs.softwaredesign.Main'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {
@@ -26,4 +39,6 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
